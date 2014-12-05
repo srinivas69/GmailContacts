@@ -21,10 +21,11 @@
         android:text="Select Account and Authenticate" />
 
     <Button
-        android:id="@+id/apicall_button"
+        android:id="@+id/fetch_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Make Goo.gl API Call" />
+        android:text="Fetch Contacts"
+        android:visibility="visible" />
 
 </LinearLayout>

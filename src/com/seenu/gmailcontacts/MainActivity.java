@@ -6,6 +6,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,7 +32,11 @@ public class MainActivity extends ActionBarActivity {
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private SharedPreferences pref;
-	private Button select, api_call;
+	private Button select, fetch_contacts;
+
+	private String contacts_url = "https://www.google.com/m8/feeds/contacts/";
+
+	private String TAG = getClass().getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 
 		select = (Button) findViewById(R.id.select_button);
-		api_call = (Button) findViewById(R.id.apicall_button);
+		fetch_contacts = (Button) findViewById(R.id.fetch_contacts);
 
 		avail_accounts = getAccountNames();
 		adapter = new ArrayAdapter<String>(this,
@@ -77,6 +83,15 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+
+		fetch_contacts.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	@Override
@@ -84,6 +99,14 @@ public class MainActivity extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int responseCode,
+			Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, responseCode, data);
+
 	}
 
 	private String[] getAccountNames() {
@@ -114,28 +137,12 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		@Override
-		protected void onPostExecute(String token) {
-			pDialog.dismiss();
-			if (token != null) {
-				SharedPreferences.Editor edit = pref.edit();
-				// Storing Access Token using SharedPreferences
-				edit.putString("Access Token", token);
-				edit.commit();
-				Log.i("Token", "Access Token retrieved:" + token);
-				Toast.makeText(getApplicationContext(),
-						"Access Token is " + token, Toast.LENGTH_SHORT).show();
-				select.setText(pref.getString("Email", "")
-						+ " is Authenticated");
-			}
-		}
-
-		@Override
 		protected String doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 			String token = null;
 			try {
 				token = GoogleAuthUtil.getToken(MainActivity.this, mEmail,
-						"oauth2:https://www.googleapis.com/auth/urlshortener");
+						"oauth2:https://www.google.com/m8/feeds");
 			} catch (IOException transientEx) {
 				// Network or server error, try later
 				Log.e("IOException", transientEx.toString());
@@ -149,7 +156,57 @@ public class MainActivity extends ActionBarActivity {
 				// Google Play services is installed.
 				Log.e("GoogleAuthException", authEx.toString());
 			}
+			// Log.i(TAG, token);
 			return token;
+		}
+
+		@Override
+		protected void onPostExecute(String token) {
+			pDialog.dismiss();
+			if (token != null) {
+				SharedPreferences.Editor edit = pref.edit();
+				// Storing Access Token using SharedPreferences
+				edit.putString("Access Token", token);
+				edit.commit();
+				Log.i("Token", "Access Token retrieved:" + token);
+				Toast.makeText(getApplicationContext(),
+						"Access Token is " + token, Toast.LENGTH_SHORT).show();
+				select.setText(pref.getString("Email", "")
+						+ " is Authenticated");
+
+				contacts_url = contacts_url + mEmail + "/full?access_token="
+						+ token;
+
+				Log.i(TAG, contacts_url);
+
+				// fetch_contacts.setVisibility(View.VISIBLE);
+			}
+		}
+
+	}
+
+	private class FetchContacts extends AsyncTask<String, Void, String> {
+
+		private ProgressDialog pDialog;
+		private String Token;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+
+			pDialog = new ProgressDialog(MainActivity.this);
+			pDialog.setMessage("Contacting Google Servers ...");
+			pDialog.setIndeterminate(false);
+			pDialog.setCancelable(true);
+			Token = pref.getString("Access Token", "");
+			pDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
