@@ -181,30 +181,4 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	private class FetchContacts extends AsyncTask<String, Void, String> {
-
-		private ProgressDialog pDialog;
-		private String Token;
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-
-			pDialog = new ProgressDialog(MainActivity.this);
-			pDialog.setMessage("Contacting Google Servers ...");
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			Token = pref.getString("Access Token", "");
-			pDialog.show();
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-	}
-
 }

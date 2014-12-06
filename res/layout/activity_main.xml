@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:text="Google OAuth"
+        android:text="Google Login"
         android:textSize="35sp" />
 
     <Button

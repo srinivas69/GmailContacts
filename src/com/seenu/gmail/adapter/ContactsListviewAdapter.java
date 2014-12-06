@@ -2,6 +2,7 @@ package com.seenu.gmail.adapter;
 
 import java.util.ArrayList;
 import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry;
+import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry.Email;
 import com.seenu.gmailcontacts.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,12 +15,14 @@ public class ContactsListviewAdapter extends BaseAdapter {
 
 	private Context context;
 	private ArrayList<Entry> entry;
+	private boolean mobNumAvail;
 
-	public ContactsListviewAdapter(Context context, ArrayList<Entry> entry) {
+	public ContactsListviewAdapter(Context context, ArrayList<Entry> entry,
+			boolean mobNumAvail) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.entry = entry;
-
+		this.mobNumAvail = mobNumAvail;
 	}
 
 	@Override
@@ -59,21 +62,18 @@ public class ContactsListviewAdapter extends BaseAdapter {
 			holder = (ViewHolder) view.getTag();
 
 		String name = entry.get(position).getTitle().get$t();
-		String mobNum = entry.get(position).getGd$phoneNumber().get(0)
-				.get$t();
+		String mobEmail = "no email available";
+
+		if (mobNumAvail)
+			mobEmail = entry.get(position).getGd$phoneNumber().get(0).get$t();
+		else {
+			ArrayList<Email> email = entry.get(position).getGd$email();
+			if (email.size() != 0)
+				mobEmail = email.get(0).getAddress();
+		}
 
 		holder.titleAdpTv.setText(name);
-		holder.phnEmailTv.setText(mobNum);
-
-		/*
-		 * ArrayList<PhoneNumber> phoneNumber = entry.get(position)
-		 * .getGd$phoneNumber();
-		 * 
-		 * if (phoneNumber.size() != 0) { String mobNum =
-		 * phoneNumber.get(0).get$t(); holder.titleAdpTv.setText(name);
-		 * holder.phnEmailTv.setText(mobNum); //
-		 * System.out.println(phoneNumber.size()); }
-		 */
+		holder.phnEmailTv.setText(mobEmail);
 
 		return view;
 	}

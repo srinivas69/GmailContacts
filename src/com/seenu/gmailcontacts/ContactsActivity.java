@@ -52,6 +52,8 @@ public class ContactsActivity extends ActionBarActivity {
 	private ListView lv;
 	private TextView emptyView;
 
+	private boolean mobNumAvail;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -70,49 +72,6 @@ public class ContactsActivity extends ActionBarActivity {
 		gps_url = gps_url + email + "/full/?alt=json&access_token=" + token;
 
 		new FetchContacts().execute(url);
-
-		// Set the touch listener
-		final SwipeDetector swipeDetector = new SwipeDetector();
-		lv.setOnTouchListener(swipeDetector);
-
-		lv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				Entry entObj = (Entry) parent.getItemAtPosition(position);
-				String mobileNum = entObj.getGd$phoneNumber().get(0).get$t();
-
-				if (swipeDetector.swipeDetected()) {
-					if (swipeDetector.getAction() == SwipeDetector.Action.LR) {
-
-						Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-						sendIntent.setType("vnd.android-dir/mms-sms");
-						sendIntent.setData(Uri.parse("sms:" + mobileNum));
-						sendIntent.putExtra("sms_body", "Hi");
-						startActivity(sendIntent);
-
-					}
-					if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
-
-						/*Toast.makeText(getApplicationContext(),
-								"Right to left", Toast.LENGTH_SHORT).show();
-						
-						Intent intent = new Intent(Intent.ACTION_CALL);
-						intent.setData(Uri.parse("tel:" + mobileNum));
-						startActivity(intent);*/
-						
-						Toast.makeText(getApplicationContext(),
-								"Make Phone call", Toast.LENGTH_SHORT).show();
-
-					}
-				}else{
-					Toast.makeText(getApplicationContext(),
-							"Clicked", Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
 
 	}
 
@@ -195,10 +154,74 @@ public class ContactsActivity extends ActionBarActivity {
 
 			});
 
-			adapter = new ContactsListviewAdapter(ContactsActivity.this,
-					mobNums);
+			if (mobNums.size() != 0) {
+
+				mobNumAvail = true;
+				adapter = new ContactsListviewAdapter(ContactsActivity.this,
+						mobNums, mobNumAvail);
+
+			} else if (mobNums.size() == 0) {
+
+				mobNumAvail = false;
+				adapter = new ContactsListviewAdapter(ContactsActivity.this,
+						entryList, mobNumAvail);
+			}
 			lv.setAdapter(adapter);
 			lv.setEmptyView(emptyView);
+
+			if (mobNumAvail) {
+
+				// Set the touch listener
+				final SwipeDetector swipeDetector = new SwipeDetector();
+				lv.setOnTouchListener(swipeDetector);
+
+				lv.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+
+						Entry entObj = (Entry) parent
+								.getItemAtPosition(position);
+						String mobileNum = entObj.getGd$phoneNumber().get(0)
+								.get$t();
+
+						if (swipeDetector.swipeDetected()) {
+							if (swipeDetector.getAction() == SwipeDetector.Action.LR) {
+
+								Intent sendIntent = new Intent(
+										Intent.ACTION_VIEW);
+								sendIntent.setType("vnd.android-dir/mms-sms");
+								sendIntent.setData(Uri
+										.parse("sms:" + mobileNum));
+								sendIntent.putExtra("sms_body", "Hi");
+								startActivity(sendIntent);
+
+							}
+							if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
+
+								/*
+								 * Toast.makeText(getApplicationContext(),
+								 * "Right to left", Toast.LENGTH_SHORT).show();
+								 * 
+								 * Intent intent = new
+								 * Intent(Intent.ACTION_CALL);
+								 * intent.setData(Uri.parse("tel:" +
+								 * mobileNum)); startActivity(intent);
+								 */
+
+								Toast.makeText(getApplicationContext(),
+										"Make Phone call", Toast.LENGTH_SHORT)
+										.show();
+
+							}
+						} else {
+							Toast.makeText(getApplicationContext(), "Clicked",
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+			}
 
 		}
 	}
