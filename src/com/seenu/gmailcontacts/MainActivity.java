@@ -179,6 +179,11 @@ public class MainActivity extends ActionBarActivity {
 
 				Log.i(TAG, contacts_url);
 
+				Intent i = new Intent(MainActivity.this, ContactsActivity.class);
+				i.putExtra("TOKEN", token);
+				i.putExtra("EMAIL", mEmail);
+				startActivity(i);
+
 				// fetch_contacts.setVisibility(View.VISIBLE);
 			}
 		}

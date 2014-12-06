@@ -296,7 +296,7 @@ int id action_context_bar 0x7f060020
 int id action_menu_divider 0x7f060019
 int id action_menu_presenter 0x7f06001a
 int id action_mode_close_button 0x7f060027
-int id action_settings 0x7f060043
+int id action_settings 0x7f060046
 int id activity_chooser_view_content 0x7f060028
 int id always 0x7f06000f
 int id beginning 0x7f060014
@@ -319,6 +319,7 @@ int id ifRoom 0x7f06000e
 int id image 0x7f06002a
 int id list 0x7f06003f
 int id listMode 0x7f060005
+int id listView1 0x7f060043
 int id list_item 0x7f06002c
 int id middle 0x7f060015
 int id never 0x7f06000d
@@ -347,6 +348,8 @@ int id split_action_bar 0x7f060021
 int id submit_area 0x7f06003c
 int id tabMode 0x7f060006
 int id terrain 0x7f060003
+int id textView1 0x7f060044
+int id textView2 0x7f060045
 int id title 0x7f06002e
 int id top_action_bar 0x7f060023
 int id up 0x7f060024
@@ -379,7 +382,9 @@ int layout abc_search_dropdown_item_icons_2line 0x7f030015
 int layout abc_search_view 0x7f030016
 int layout accounts_dialog 0x7f030017
 int layout activity_main 0x7f030018
-int layout support_simple_spinner_dropdown_item 0x7f030019
+int layout contacts_activity 0x7f030019
+int layout contacts_list_item 0x7f03001a
+int layout support_simple_spinner_dropdown_item 0x7f03001b
 int menu main 0x7f0c0000
 int string abc_action_bar_home_description 0x7f07001c
 int string abc_action_bar_up_description 0x7f07001d
