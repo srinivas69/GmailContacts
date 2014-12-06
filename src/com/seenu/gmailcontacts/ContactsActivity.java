@@ -15,19 +15,27 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.seenu.gmail.adapter.ContactsListviewAdapter;
 import com.seenu.gmail.pojo.ContactsFeed;
 import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry;
 import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry.PhoneNumber;
-
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.widget.ListView;
-import android.widget.TextView;
+import com.seenu.gmail.swipedetector.SwipeDetector;
 
 public class ContactsActivity extends ActionBarActivity {
 	private String token;
@@ -62,6 +70,49 @@ public class ContactsActivity extends ActionBarActivity {
 		gps_url = gps_url + email + "/full/?alt=json&access_token=" + token;
 
 		new FetchContacts().execute(url);
+
+		// Set the touch listener
+		final SwipeDetector swipeDetector = new SwipeDetector();
+		lv.setOnTouchListener(swipeDetector);
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				Entry entObj = (Entry) parent.getItemAtPosition(position);
+				String mobileNum = entObj.getGd$phoneNumber().get(0).get$t();
+
+				if (swipeDetector.swipeDetected()) {
+					if (swipeDetector.getAction() == SwipeDetector.Action.LR) {
+
+						Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+						sendIntent.setType("vnd.android-dir/mms-sms");
+						sendIntent.setData(Uri.parse("sms:" + mobileNum));
+						sendIntent.putExtra("sms_body", "Hi");
+						startActivity(sendIntent);
+
+					}
+					if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
+
+						/*Toast.makeText(getApplicationContext(),
+								"Right to left", Toast.LENGTH_SHORT).show();
+						
+						Intent intent = new Intent(Intent.ACTION_CALL);
+						intent.setData(Uri.parse("tel:" + mobileNum));
+						startActivity(intent);*/
+						
+						Toast.makeText(getApplicationContext(),
+								"Make Phone call", Toast.LENGTH_SHORT).show();
+
+					}
+				}else{
+					Toast.makeText(getApplicationContext(),
+							"Clicked", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 
 	}
 
@@ -148,6 +199,7 @@ public class ContactsActivity extends ActionBarActivity {
 					mobNums);
 			lv.setAdapter(adapter);
 			lv.setEmptyView(emptyView);
+
 		}
 	}
 
