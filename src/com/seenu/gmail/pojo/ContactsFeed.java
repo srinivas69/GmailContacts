@@ -97,6 +97,7 @@ public class ContactsFeed {
 			public Title title;
 			public ArrayList<Email> gd$email;
 			public ArrayList<PhoneNumber> gd$phoneNumber;
+			public ArrayList<Link> link;
 
 			public Entry() {
 				super();
@@ -104,6 +105,7 @@ public class ContactsFeed {
 
 				gd$email = new ArrayList<Email>();
 				gd$phoneNumber = new ArrayList<PhoneNumber>();
+				link = new ArrayList<Link>();
 			}
 
 			public Title getTitle() {
@@ -130,6 +132,15 @@ public class ContactsFeed {
 				this.gd$phoneNumber = gd$phoneNumber;
 			}
 
+			public ArrayList<Link> getLink() {
+				return link;
+			}
+
+			public void setLink(ArrayList<Link> link) {
+				this.link = link;
+			}
+
+			// Email address
 			public static class Email {
 
 				public String address;
@@ -153,6 +164,7 @@ public class ContactsFeed {
 
 			}
 
+			// Mobile Number
 			public static class PhoneNumber {
 
 				public String $t;
@@ -172,6 +184,38 @@ public class ContactsFeed {
 
 				public void setPrimary(boolean primary) {
 					this.primary = primary;
+				}
+
+			}
+
+			// Image Link
+			public static class Link {
+				public String rel;
+				public String type;
+				public String href;
+
+				public String getRel() {
+					return rel;
+				}
+
+				public void setRel(String rel) {
+					this.rel = rel;
+				}
+
+				public String getType() {
+					return type;
+				}
+
+				public void setType(String type) {
+					this.type = type;
+				}
+
+				public String getHref() {
+					return href;
+				}
+
+				public void setHref(String href) {
+					this.href = href;
 				}
 
 			}

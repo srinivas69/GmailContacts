@@ -15,14 +15,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -159,14 +160,35 @@ public class ContactsActivity extends ActionBarActivity {
 				mobNumAvail = true;
 				adapter = new ContactsListviewAdapter(ContactsActivity.this,
 						mobNums, mobNumAvail);
+				lv.setAdapter(adapter);
 
 			} else if (mobNums.size() == 0) {
 
 				mobNumAvail = false;
 				adapter = new ContactsListviewAdapter(ContactsActivity.this,
 						entryList, mobNumAvail);
+				lv.setAdapter(adapter);
+
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						ContactsActivity.this);
+				alertDialogBuilder.setTitle("Sync Contacts");
+				alertDialogBuilder
+						.setMessage("You have not synced your mobile contacts with this email.");
+				alertDialogBuilder.setCancelable(true);
+
+				alertDialogBuilder.setPositiveButton("Ok",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+
+								dialog.dismiss();
+
+							}
+						});
+
+				AlertDialog alert = alertDialogBuilder.create();
+				alert.show();
 			}
-			lv.setAdapter(adapter);
+
 			lv.setEmptyView(emptyView);
 
 			if (mobNumAvail) {
@@ -200,15 +222,13 @@ public class ContactsActivity extends ActionBarActivity {
 							}
 							if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
 
-								/*
-								 * Toast.makeText(getApplicationContext(),
-								 * "Right to left", Toast.LENGTH_SHORT).show();
-								 * 
-								 * Intent intent = new
-								 * Intent(Intent.ACTION_CALL);
-								 * intent.setData(Uri.parse("tel:" +
-								 * mobileNum)); startActivity(intent);
-								 */
+								Toast.makeText(getApplicationContext(),
+										"Right to left", Toast.LENGTH_SHORT)
+										.show();
+
+								Intent intent = new Intent(Intent.ACTION_CALL);
+								intent.setData(Uri.parse("tel:" + mobileNum));
+								startActivity(intent);
 
 								Toast.makeText(getApplicationContext(),
 										"Make Phone call", Toast.LENGTH_SHORT)
@@ -216,8 +236,19 @@ public class ContactsActivity extends ActionBarActivity {
 
 							}
 						} else {
-							Toast.makeText(getApplicationContext(), "Clicked",
-									Toast.LENGTH_SHORT).show();
+
+							String name = entObj.getTitle().get$t();
+							String mobNum = entObj.getGd$phoneNumber().get(0)
+									.get$t();
+							String image = entObj.getLink().get(0).getHref();
+
+							String imageUrl = image + "?access_token=" + token;
+							Intent i = new Intent(ContactsActivity.this,
+									ContactDetailsActivity.class);
+							i.putExtra("NAME", name);
+							i.putExtra("MOB_NUM", mobNum);
+							i.putExtra("IMG_URL", imageUrl);
+							startActivity(i);
 						}
 					}
 				});

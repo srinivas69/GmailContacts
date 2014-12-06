@@ -160,8 +160,6 @@ public class MainActivity extends ActionBarActivity {
 				edit.putString("Access Token", token);
 				edit.commit();
 				Log.i("Token", "Access Token retrieved:" + token);
-				Toast.makeText(getApplicationContext(),
-						"Access Token is " + token, Toast.LENGTH_SHORT).show();
 				select.setText(pref.getString("Email", "")
 						+ " is Authenticated");
 
