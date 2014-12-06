@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,6 +19,7 @@ import com.google.gson.Gson;
 import com.seenu.gmail.adapter.ContactsListviewAdapter;
 import com.seenu.gmail.pojo.ContactsFeed;
 import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry;
+import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry.PhoneNumber;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -24,6 +27,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ContactsActivity extends ActionBarActivity {
 	private String token;
@@ -38,6 +42,7 @@ public class ContactsActivity extends ActionBarActivity {
 	private ContactsListviewAdapter adapter;
 
 	private ListView lv;
+	private TextView emptyView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class ContactsActivity extends ActionBarActivity {
 		setContentView(R.layout.contacts_activity);
 
 		lv = (ListView) findViewById(R.id.listView1);
+		emptyView = (TextView) findViewById(R.id.textView1);
 
 		Bundle b = getIntent().getExtras();
 		token = b.getString("TOKEN");
@@ -115,9 +121,33 @@ public class ContactsActivity extends ActionBarActivity {
 			pDialog.dismiss();
 
 			ArrayList<Entry> entryList = result.getFeed().getEntry();
+			ArrayList<Entry> mobNums = new ArrayList<Entry>();
+
+			// adding objects that have mobile number to mobNums ArrayList
+			for (Entry entry2 : entryList) {
+				ArrayList<PhoneNumber> phoneNumber = entry2.getGd$phoneNumber();
+				if (phoneNumber.size() != 0) {
+					mobNums.add(entry2);
+				} else
+					continue;
+			}
+
+			// sorting the mobNums ArrayList alphabetically
+			Collections.sort(mobNums, new Comparator<Entry>() {
+
+				@Override
+				public int compare(Entry lhs, Entry rhs) {
+					// TODO Auto-generated method stub
+					return lhs.getTitle().get$t()
+							.compareTo(rhs.getTitle().get$t());
+				}
+
+			});
+
 			adapter = new ContactsListviewAdapter(ContactsActivity.this,
-					entryList);
+					mobNums);
 			lv.setAdapter(adapter);
+			lv.setEmptyView(emptyView);
 		}
 	}
 

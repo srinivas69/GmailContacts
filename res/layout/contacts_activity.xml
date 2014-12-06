@@ -11,4 +11,15 @@
         android:layout_centerHorizontal="true" >
     </ListView>
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="This email doesn&apos;t have any contacts associated with mobile numbers"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
+
 </RelativeLayout>

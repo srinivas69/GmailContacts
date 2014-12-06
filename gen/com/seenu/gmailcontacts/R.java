@@ -1178,7 +1178,8 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020073;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f060040;
+        public static final int RelativeLayout1=0x7f060040;
+        public static final int TextView1=0x7f060041;
         public static final int action_bar=0x7f06001f;
         public static final int action_bar_activity_content=0x7f060018;
         public static final int action_bar_container=0x7f06001e;
@@ -1204,7 +1205,6 @@ containing a value of this type.
         public static final int end=0x7f060016;
         public static final int expand_activities_button=0x7f060029;
         public static final int expanded_menu=0x7f06002f;
-        public static final int fetch_contacts=0x7f060042;
         public static final int home=0x7f060017;
         public static final int homeAsUp=0x7f060009;
         public static final int hybrid=0x7f060004;
@@ -1233,7 +1233,7 @@ containing a value of this type.
         public static final int search_plate=0x7f060039;
         public static final int search_src_text=0x7f06003a;
         public static final int search_voice_btn=0x7f06003e;
-        public static final int select_button=0x7f060041;
+        public static final int select_button=0x7f060042;
         public static final int shortcut=0x7f060031;
         public static final int showCustom=0x7f06000b;
         public static final int showHome=0x7f060008;

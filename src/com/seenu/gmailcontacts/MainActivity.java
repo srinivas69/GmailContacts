@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 	private ListView list;
 	private ArrayAdapter<String> adapter;
 	private SharedPreferences pref;
-	private Button select, fetch_contacts;
+	private Button select;
 
 	private String contacts_url = "https://www.google.com/m8/feeds/contacts/";
 
@@ -44,7 +44,6 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 
 		select = (Button) findViewById(R.id.select_button);
-		fetch_contacts = (Button) findViewById(R.id.fetch_contacts);
 
 		avail_accounts = getAccountNames();
 		adapter = new ArrayAdapter<String>(this,
@@ -84,14 +83,6 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
-		fetch_contacts.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 	}
 
 	@Override

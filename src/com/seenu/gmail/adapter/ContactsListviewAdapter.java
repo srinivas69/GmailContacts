@@ -1,11 +1,7 @@
 package com.seenu.gmail.adapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry;
-import com.seenu.gmail.pojo.ContactsFeed.Feed.Entry.PhoneNumber;
 import com.seenu.gmailcontacts.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,44 +14,24 @@ public class ContactsListviewAdapter extends BaseAdapter {
 
 	private Context context;
 	private ArrayList<Entry> entry;
-	private ArrayList<Entry> mobNums;
 
 	public ContactsListviewAdapter(Context context, ArrayList<Entry> entry) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.entry = entry;
 
-		mobNums = new ArrayList<Entry>();
-
-		for (Entry entry2 : entry) {
-			ArrayList<PhoneNumber> phoneNumber = entry2.getGd$phoneNumber();
-			if (phoneNumber.size() != 0) {
-				mobNums.add(entry2);
-			} else
-				continue;
-		}
-
-		Collections.sort(mobNums, new Comparator<Entry>() {
-
-			@Override
-			public int compare(Entry lhs, Entry rhs) {
-				// TODO Auto-generated method stub
-				return lhs.getTitle().get$t().compareTo(rhs.getTitle().get$t());
-			}
-
-		});
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mobNums.size();
+		return entry.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return mobNums.get(position);
+		return entry.get(position);
 	}
 
 	@Override
@@ -82,8 +58,8 @@ public class ContactsListviewAdapter extends BaseAdapter {
 		} else
 			holder = (ViewHolder) view.getTag();
 
-		String name = mobNums.get(position).getTitle().get$t();
-		String mobNum = mobNums.get(position).getGd$phoneNumber().get(0)
+		String name = entry.get(position).getTitle().get$t();
+		String mobNum = entry.get(position).getGd$phoneNumber().get(0)
 				.get$t();
 
 		holder.titleAdpTv.setText(name);

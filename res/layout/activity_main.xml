@@ -1,14 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/TextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:text="Google OAuth"
         android:textSize="35sp" />
@@ -17,15 +20,8 @@
         android:id="@+id/select_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="Select Account and Authenticate" />
 
-    <Button
-        android:id="@+id/fetch_contacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Fetch Contacts"
-        android:visibility="visible" />
-
-</LinearLayout>
+</RelativeLayout>
